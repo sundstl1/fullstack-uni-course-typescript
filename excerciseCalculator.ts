@@ -75,7 +75,6 @@ const calculateExcercises = (
 ): excerciseStats => {
   const average =
     excerciseHours.reduce((a, b) => a + b, 0) / excerciseHours.length;
-  const success = average > target;
   const ratings = rateExcercising(average, target);
   return {
     periodLength: excerciseHours.length,
