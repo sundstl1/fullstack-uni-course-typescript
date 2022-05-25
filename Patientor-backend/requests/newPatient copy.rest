@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/patients/ HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Aku ankka",
+  "dateOfBirth": "1993-07-10",
+  "gender": "male",
+  "occupation": "butter factory worker",
+  "ssn": "quack1234"
+}
