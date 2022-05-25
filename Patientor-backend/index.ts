@@ -4,6 +4,7 @@ import diagnosisRouter from "./routes/diagnosisRouter";
 import patientsRouter from "./routes/patientsRouter";
 
 const app = express();
+app.use(express.json());
 
 const allowedOrigins = ["http://localhost:3000", "https://localhost:3000"];
 

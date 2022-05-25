@@ -1,7 +1,13 @@
 import patientsData from "../data/patients.json";
-import { Patient, PatientNoSsn } from "../types";
+import { Patient, PatientNoSsn, NewPatientEntry } from "../types";
+import { v1 as uuid } from "uuid";
+import toNewPatientEntry from "../utils";
 
-const patients: Array<Patient> = patientsData as Array<Patient>;
+const patients: Array<Patient> = patientsData.map((obj) => {
+  const object = toNewPatientEntry(obj) as Patient;
+  object.id = obj.id;
+  return object;
+});
 
 const getEntries = (): Patient[] => {
   return patients;
@@ -17,7 +23,18 @@ const getAllNoSsn = (): PatientNoSsn[] => {
   }));
 };
 
+const addPatient = (entry: NewPatientEntry): Patient => {
+  const newPatient = {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    id: uuid() as string,
+    ...entry,
+  };
+  patients.push(newPatient);
+  return newPatient;
+};
+
 export default {
   getEntries,
   getAllNoSsn,
+  addPatient,
 };
