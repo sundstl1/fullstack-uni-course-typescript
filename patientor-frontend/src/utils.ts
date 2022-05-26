@@ -14,6 +14,7 @@ export const toEntry = (value: EntryFormValues): NoIdEntry => {
     specialist: value.specialist,
     diagnosisCodes: value.diagnosisCodes,
   };
+  console.log(value);
   switch (value.type) {
     case "Hospital":
       let discharge = value.discharge;
@@ -26,10 +27,8 @@ export const toEntry = (value: EntryFormValues): NoIdEntry => {
         discharge: value.discharge,
       };
     case "HealthCheck":
-      if (
-        value.healthCheckRating === undefined ||
-        isNaN(Number(value.healthCheckRating))
-      ) {
+      if (value.healthCheckRating === undefined) {
+        console.log("undefined");
         throw new Error("Missing health check rating");
       }
       return {

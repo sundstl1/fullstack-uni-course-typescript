@@ -127,7 +127,7 @@ const parseString = (text: unknown, field: string): string => {
 };
 
 const parseNumber = (number: unknown, field: string): number => {
-  if (!number || !isNumber(number)) {
+  if (number === undefined || !isNumber(number)) {
     throw new Error(`Incorrect or missing number in field ${field}`);
   }
 
