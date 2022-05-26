@@ -1,5 +1,5 @@
-import { useStateValue, addFullPatient } from "../state";
-import { Patient } from "../types";
+import { useStateValue, addFullPatient, addEntry } from "../state";
+import { Entry, Patient } from "../types";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
@@ -8,11 +8,50 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import Entries from "./Entries";
+import { AddEntryModal } from "../AddPatientModal";
+import { Button } from "@material-ui/core";
+import { EntryFormValues } from "../AddPatientModal/AddEntryForm";
+import { toEntry } from "../utils";
 
 const PatientInfoPage = () => {
   const [{ patientsFullInfo }, dispatch] = useStateValue();
   const { id } = useParams();
   const [currentPatient, setCurrentPatient] = React.useState<Patient>();
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [error, setError] = React.useState<string>();
+
+  const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  const submitNewEntry = async (values: EntryFormValues) => {
+    try {
+      const entryToSend = toEntry(values);
+      if (!currentPatient) {
+        return;
+      }
+      const { data: newEntry } = await axios.post<Entry>(
+        `${apiBaseUrl}/patients/${currentPatient.id}/entries`,
+        entryToSend
+      );
+      dispatch(addEntry(newEntry, currentPatient.id));
+      closeModal();
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        console.error(e?.response?.data || "Unrecognized axios error");
+        setError(
+          String(e?.response?.data?.error) || "Unrecognized axios error"
+        );
+      } else {
+        console.error("Unknown error", e);
+        setError("Unknown error");
+      }
+    }
+  };
+
   const fetchPatientFromBe = async (patientId: string) => {
     try {
       const { data: patientFromApi } = await axios.get<Patient>(
@@ -66,6 +105,15 @@ const PatientInfoPage = () => {
         occupation: {currentPatient.occupation}
       </p>
       <Entries logs={currentPatient.entries} />
+      <AddEntryModal
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+      />
+      <Button variant="contained" onClick={() => openModal()}>
+        Add New Entry
+      </Button>
     </div>
   );
 };
