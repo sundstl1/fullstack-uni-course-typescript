@@ -1,0 +1,34 @@
+POST http://localhost:3001/api/patients/d2773822-f723-11e9-8f0b-362b9e155667/entries HTTP/1.1
+content-type: application/json
+
+# {
+#   "type": "HealthCheck",
+#   "description": "I just added this",
+#   "date": "2020-05-10",
+#   "specialist": "Dr Geller",
+#   "healthCheckRating": 2
+# }
+
+# {
+#   "type": "Hospital",
+#   "description": "I just added this",
+#   "date": "2020-05-10",
+#   "specialist": "Dr Geller",
+#   "discharge": {
+#     "date": "2020-05-10",
+#     "criteria": "we got off easy"
+#   }
+# }
+
+{
+  "type": "OccupationalHealthcare",
+  "description": "I just added this as well",
+  "date": "2020-05-10",
+  "specialist": "Dr Geller",
+  "employerName": "stuffy and stuffy",
+  "diagnosisCodes": ["S03.5", "J10.1"]
+  "sickLeave": {
+    "startDate": "2020-05-10",
+    "endDate": "2020-05-17"
+  }
+}
