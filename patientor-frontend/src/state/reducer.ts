@@ -1,19 +1,31 @@
 import { State } from "./state";
 import { Patient } from "../types";
 
+export const setPatientList = (patients: Patient[]) => {
+  return {
+    type: "SET_PATIENT_LIST",
+    payload: patients,
+  } as const;
+};
+
+export const addPatient = (patient: Patient) => {
+  return {
+    type: "ADD_PATIENT",
+    payload: patient,
+  } as const;
+};
+
+export const addFullPatient = (patient: Patient) => {
+  return {
+    type: "ADD_FULL_PATIENT",
+    payload: patient,
+  } as const;
+};
+
 export type Action =
-  | {
-      type: "SET_PATIENT_LIST";
-      payload: Patient[];
-    }
-  | {
-      type: "ADD_PATIENT";
-      payload: Patient;
-    }
-  | {
-      type: "ADD_FULL_PATIENT";
-      payload: Patient;
-    };
+  | ReturnType<typeof setPatientList>
+  | ReturnType<typeof addPatient>
+  | ReturnType<typeof addFullPatient>;
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {

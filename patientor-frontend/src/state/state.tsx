@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { Patient } from "../types";
 
-import { Action } from "./reducer";
+import { Action, addPatient, setPatientList, addFullPatient } from "./reducer";
+
+export { addPatient, setPatientList, addFullPatient };
 
 export type State = {
   patients: { [id: string]: Patient };
