@@ -1,7 +1,19 @@
-import { Entry } from "../types";
+import { useStateValue } from "../state";
+import { Diagnosis, Entry } from "../types";
 
 const Entries = ({ logs }: { logs: Entry[] | undefined }) => {
-  console.log(logs);
+  const [{ diagnoses }] = useStateValue();
+
+  const getDiagnosisText = (code: string): string => {
+    const diagnosis = Object.values(diagnoses).find(
+      (d: Diagnosis) => d.code === code
+    );
+    if (diagnosis) {
+      return diagnosis.name;
+    }
+    return "unkown diagnosis code";
+  };
+
   if (!logs) {
     return <h3>entries none</h3>;
   } else {
@@ -17,7 +29,9 @@ const Entries = ({ logs }: { logs: Entry[] | undefined }) => {
             <ul>
               {e.diagnosisCodes ? (
                 Object.values(e.diagnosisCodes).map((d: string) => (
-                  <li key={d}>{d}</li>
+                  <li key={d}>
+                    {d} {getDiagnosisText(d)}
+                  </li>
                 ))
               ) : (
                 <></>

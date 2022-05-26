@@ -13,7 +13,6 @@ const PatientInfoPage = () => {
   const [{ patientsFullInfo }, dispatch] = useStateValue();
   const { id } = useParams();
   const [currentPatient, setCurrentPatient] = React.useState<Patient>();
-
   const fetchPatientFromBe = async (patientId: string) => {
     try {
       const { data: patientFromApi } = await axios.get<Patient>(
