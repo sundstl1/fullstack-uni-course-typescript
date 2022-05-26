@@ -1,5 +1,10 @@
 import { useStateValue } from "../state";
 import { Diagnosis, Entry } from "../types";
+import HospitalEntryView from "./HospitalEntryView";
+import HealthCheckEntryView from "./HealthCheckEntryView";
+import OccupationalEntry from "./OccupationalEntry";
+import { assertNever } from "../utils";
+import { Box } from "@mui/material";
 
 const Entries = ({ logs }: { logs: Entry[] | undefined }) => {
   const [{ diagnoses }] = useStateValue();
@@ -14,6 +19,34 @@ const Entries = ({ logs }: { logs: Entry[] | undefined }) => {
     return "unkown diagnosis code";
   };
 
+  const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+    switch (entry.type) {
+      case "Hospital":
+        return (
+          <HospitalEntryView
+            entry={entry}
+            getDiagnosisText={getDiagnosisText}
+          />
+        );
+      case "HealthCheck":
+        return (
+          <HealthCheckEntryView
+            entry={entry}
+            getDiagnosisText={getDiagnosisText}
+          />
+        );
+      case "OccupationalHealthcare":
+        return (
+          <OccupationalEntry
+            entry={entry}
+            getDiagnosisText={getDiagnosisText}
+          />
+        );
+      default:
+        return assertNever(entry);
+    }
+  };
+
   if (!logs) {
     return <h3>entries none</h3>;
   } else {
@@ -22,21 +55,10 @@ const Entries = ({ logs }: { logs: Entry[] | undefined }) => {
         <h3>entries</h3>
         {Object.values(logs).map((e: Entry) => (
           <div key={e.id}>
-            <p>
-              {console.log(e.diagnosisCodes)}
-              {e.date} <i>{e.description}</i>
-            </p>
-            <ul>
-              {e.diagnosisCodes ? (
-                Object.values(e.diagnosisCodes).map((d: string) => (
-                  <li key={d}>
-                    {d} {getDiagnosisText(d)}
-                  </li>
-                ))
-              ) : (
-                <></>
-              )}
-            </ul>
+            <Box sx={{ pl: 1, border: "1px solid black" }} borderRadius={2}>
+              <EntryDetails entry={e} />
+            </Box>
+            <br />
           </div>
         ))}
       </div>
