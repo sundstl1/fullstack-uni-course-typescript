@@ -7,6 +7,7 @@ import React from "react";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
+import Entries from "./Entries";
 
 const PatientInfoPage = () => {
   const [{ patientsFullInfo }, dispatch] = useStateValue();
@@ -65,6 +66,7 @@ const PatientInfoPage = () => {
         <br />
         occupation: {currentPatient.occupation}
       </p>
+      <Entries logs={currentPatient.entries} />
     </div>
   );
 };
